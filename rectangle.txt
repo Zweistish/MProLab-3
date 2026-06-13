@@ -1,0 +1,53 @@
+.model small
+.stack 100h
+
+.data
+    len db 2
+    wid db 2
+
+    areaMsg db 'Area = $'
+    perMsg  db 13,10,'Perimeter = $'
+
+.code
+main:
+    mov ax,@data
+    mov ds,ax
+
+    ; ===== Area = len * wid =====
+    mov al,len
+    mov bl,wid
+    mul bl          ; 2 * 2 = 4
+
+    add al,48
+    push ax
+
+    mov ah,09h
+    lea dx,areaMsg
+    int 21h
+
+    pop ax
+    mov dl,al
+    mov ah,02h
+    int 21h
+
+    ; ===== Perimeter = 2*(len+wid) =====
+    mov al,len
+    add al,wid      ; 2 + 2 = 4
+    add al,al       ; 4 * 2 = 8
+
+    add al,48
+    push ax
+
+    mov ah,09h
+    lea dx,perMsg
+    int 21h
+
+    pop ax
+    mov dl,al
+    mov ah,02h
+    int 21h
+
+    mov ah,4Ch
+    int 21h
+
+end main
